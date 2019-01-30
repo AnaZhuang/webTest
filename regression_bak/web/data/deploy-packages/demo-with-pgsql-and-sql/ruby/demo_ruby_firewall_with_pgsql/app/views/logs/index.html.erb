@@ -1,0 +1,21 @@
+<h1><%= @batch.zone.name + " "  + @batch.desc %> Listing logs</h1>
+
+<table>
+  <tr>
+  	<th>At</th>
+    <th>Ip</th>
+    <th>Success</th>
+  </tr>
+
+<% @logs.each do |log| %>
+  <tr>
+  	<td><%= log.created_at.localtime.strftime('%Y-%m-%d %H:%M:%S') %></td>
+    <td><%= log.ip %></td>
+    <td><%= log.success %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'back', zone_batches_path(@batch.zone) %>

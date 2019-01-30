@@ -1,0 +1,20 @@
+<%= form_for(@management_server) do |f| %>
+  <% if @management_server.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@management_server.errors.count, "error") %> prohibited this management_server from being saved:</h2>
+
+      <ul>
+      <% @management_server.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ip %>  <%= f.text_field :ip %>
+  </div>
+  <div class="actions">
+    <%= f.submit :value => 'save' %>
+  </div>
+<% end %>

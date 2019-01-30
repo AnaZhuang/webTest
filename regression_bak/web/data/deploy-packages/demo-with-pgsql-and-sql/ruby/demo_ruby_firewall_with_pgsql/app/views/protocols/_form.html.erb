@@ -1,0 +1,33 @@
+<%= form_for(@protocol) do |f| %>
+  <% if @protocol.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@protocol.errors.count, "error") %> prohibited this protocol from being saved:</h2>
+
+      <ul>
+      <% @protocol.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %> 
+  </div>
+  <div class="field">
+    <%= f.label :ports %><br />
+    <%= f.text_field :ports %> <span style="color: blue">exp: 80,8080:8083</span>
+  </div>
+  <div class="field">
+    <%= f.label :tcp %><br />
+    <%= f.check_box :tcp %>
+  </div>
+  <div class="field">
+    <%= f.label :udp %><br />
+    <%= f.check_box :udp %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

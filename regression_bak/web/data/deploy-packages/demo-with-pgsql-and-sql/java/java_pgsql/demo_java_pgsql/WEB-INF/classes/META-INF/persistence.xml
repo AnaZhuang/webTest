@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+	<persistence-unit name="org.onecloud.ocean.demo.jpa">
+		<description>Persistence unit for the JPA demo of Ocean Driver</description>
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<class>org.onecloud.ocean.demo.jpa.JpaCustomer</class>
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.onecloud.facet.ocean.jdbc.OceanDriver"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:ocean:postgresql://3363_1053_9285_5151/sampledb?readOnly=false" />
+			<property name="javax.persistence.jdbc.user" value="u1111111111112222" />
+			<property name="javax.persistence.jdbc.password" value="" />
+		</properties>
+	</persistence-unit>
+</persistence>

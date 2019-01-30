@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <%= stylesheet_link_tag    "application" %>
+  <%= javascript_include_tag "application" %>
+<script type="text/javascript">
+    $(document).ready(function(){
+//   	$("#columns").css('height', $(window).height() - $("#banner").height() - 4);
+    	$("#side").css('height', $(window).height() - $("#banner").height() - $("#bottom").height() - 28);
+<% if controller_name == 'deploy_logs' && action_name == 'index' %>
+        setInterval('update_state()', 3000);
+<% end %> 
+    })
+</script>  
+  <%= csrf_meta_tags %>
+</head>
+<body>
+    <div id="banner">
+        <span id="banner_left">
+        </span>
+        <span id="banner_center">
+       		Firewall Management System
+        </span>
+        <span id="banner_exit">
+<!--
+            <%=link_to '修改密码', '#' %> &nbsp;&nbsp;&nbsp;
+            <%=link_to '退出', '#' %> &nbsp;&nbsp;&nbsp;
+-->
+        </span>
+        <span id="banner_right">
+        </span>
+        <span id="banner_icon">
+        </span>
+    </div>
+    <div id="columns">
+        <div id="side">
+            <div id="main_menu">
+                <ol id="memus">
+                    <li>
+        		<%= link_to 'Rulesets', rulesets_path %>
+	                </li>
+                    <li>
+        		<%= link_to 'Zones', zones_path %>
+	                </li>
+        	        <li>
+        		<%= link_to 'Protocols', protocols_path %>
+        	        </li>
+        	        <li>
+        	    <%= link_to 'Admin IP', edit_management_server_path(1) %>
+        	        </li>
+        	        <li>
+        	    <%= link_to 'Softwares', softwares_path %>
+        	        </li>
+        	        <li>
+        	    <%= link_to 'Machines', machines_path %>
+        	        </li>
+                </ol>	           
+			</div>
+        </div>
+        <div id="main">
+            <%= yield %>       
+        </div>
+        <div id="bottom"><span id="bottom_copyright">+ Copy Right：OneCloud +<span></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<h1>Listing <%=@software.name%> packages</h1>
+
+<table>
+  <tr>
+    <th>Version</th>
+    <th>Software</th>
+    <th>Files</th>
+    <th>Published</th>
+    <th>Operations</th>
+  </tr>
+
+<% @packages.sort{|x, y| y.version <=> x.version }.each do |package| %>
+  <tr>
+    <td><%= package.version %></td>
+    <td><%= package.software.name %></td>
+    <td><%= package.fs.collect{|x| x.name}.join(',') %></td>
+    <td><%= package.publish %></td>
+    <td><%= link_to 'Files', software_package_fs_path(@software, package) %>
+    	<% unless package.publish? && package.deployed_logs.size > 0 %>
+        <%= link_to 'Destroy', software_package_path(@software, package), confirm: 'Are you sure?', method: :delete %>
+        <% end %>
+        
+        <% unless package.publish? %>
+          <% if package.fs.size > 0 %>
+          <%= link_to 'Publish', publish_software_package_path(@software, package), method: :put %>
+          <% end %>
+        <% else %>
+          <%= link_to 'Unpublish', unpublish_software_package_path(@software, package), method: :put %>
+        <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Package', software_packages_path(@software), method: :post %>
+<%= link_to 'Back', softwares_path %>

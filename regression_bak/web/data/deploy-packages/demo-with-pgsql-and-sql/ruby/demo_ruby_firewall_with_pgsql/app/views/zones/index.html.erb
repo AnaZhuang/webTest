@@ -1,0 +1,34 @@
+<h1>Listing zones</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Desc</th>
+    <th>Value</th>
+    <th>Operations</th>
+  </tr>
+
+<% @zones.each do |zone| %>
+  <tr>
+    <td><%= zone.name %></td>
+    <td><%= zone.desc %></td>
+    <td><%= zone.value %></td>
+    <td>
+    	<% if zone.id != 1 %>
+    	<%= link_to 'Edit', edit_zone_path(zone) %>
+    	<%= link_to 'Downlaod', download_zone_path(zone) %>
+    	<%= link_to 'LogBatches', zone_batches_path(zone)  %>
+    	<%= link_to 'Deploy', deploy_zone_path(zone), method: :post %>
+    	<%= link_to 'Clear', clear_zone_path(zone), method: :post %>
+    	<% end %>
+    	<% unless zone.sys? %>
+    <%= link_to 'Destroy', zone, confirm: 'Are you sure?', method: :delete %>
+        <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Zone', new_zone_path %>

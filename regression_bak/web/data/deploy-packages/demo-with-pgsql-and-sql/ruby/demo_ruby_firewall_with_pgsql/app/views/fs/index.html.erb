@@ -1,0 +1,118 @@
+<h1>Software:<%= @software.name %> Version:<%= @package.version %> </h1>
+
+<script type="text/javascript">
+function submit_file()
+{
+  if ($('#upload').attr("value"))
+  {
+      return true;
+  }
+  else
+  {
+      alert("please first choose a file!");
+      return false;
+  }
+}
+
+function change_state(f_id)
+{
+	if ($("#destine_label_" + f_id).css("display") != "none")
+	{
+		$("#destine_label_" + f_id).css("display", "none");
+		$("#destine_text_" + f_id).css("display", "");
+		$("#destine_text_" + f_id).focus();
+	}
+}
+
+function onfocusout(f_id)
+{
+	var action_url = $("#pre_submit_url").attr("value") + "/fs/" + f_id;
+	var value = $("#destine_text_" + f_id).attr("value");
+	$("#form_remote").attr("action", action_url);
+	$("#f_destine").attr("value", value);
+	$("#form_remote").submit();
+}
+
+function update(e, f_id)
+{
+	var evt;
+	if (window.event)
+	{
+		 evt = window.event;
+	}
+	else
+	{
+	     evt = e;	
+	}
+	
+	if (evt.keyCode == 13)
+	{
+		onfocusout(f_id);
+	}
+}
+
+</script>
+
+<% unless @package.publish? %>    
+<%= form_tag(software_package_fs_path, :multipart => true) do %>
+<label for="upload_file">Select File</label> : 
+<input id="upload" name="upload" type="file" value=""/>
+<input name="commit" type="submit" value="Upload" onclick="return submit_file();"/>
+<% end %>
+<% end %>
+
+<br />
+
+<table>
+  <tr id="test">
+  	<th>Sn</th>
+    <th>Name</th>
+    <th>ContentType</th>
+    <th>Md5sum</th>
+    <th>Destine</th>
+    <th>Operations</th>
+<% unless @package.publish? %>    
+    <th>Order</th>
+<% end %>    
+  </tr>
+
+<% @fs.each do |f| %>
+  <tr>
+  	<td><%= f.sn %></td>
+    <td><%= f.name %></td>
+    <td><%= f.content_type %></td>
+    <td><%= f.md5sum %></td>
+    <td id="destine_<%= f.id %>" onclick="change_state(<%= f.id %>);">
+    	<span id="destine_label_<%= f.id %>"><%= f.destine %></span>
+<% unless @package.publish? %>    
+    	<input id="destine_text_<%= f.id %>" value="<%= f.destine %>" onblur="onfocusout(<%= f.id %>);" 
+    	name="f[destine]" style="display: none" type="text" onkeydown="update(event, <%= f.id %>);" />
+<% end %>
+    </td>
+    <td>
+        <%= link_to 'Download', software_package_f_path(@software, @package, f) %>
+<% unless @package.publish? %>    
+        <%= link_to 'Destroy', software_package_f_path(@software, @package, f), confirm: 'Are you sure?', method: :delete %>
+    </td>
+    <td>
+    	<% if f.sn != 1 %>
+        <%= link_to 'UP', up_software_package_f_path(@software, @package, f), method: :put %>
+    	<% end %>
+    	<% if f.sn != @package.fs.size %>
+        <%= link_to 'Down', down_software_package_f_path(@software, @package, f), method: :put %>
+    	<% end %>
+<% end %>    
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<%= link_to 'Back',  software_packages_path(@software) %>
+
+<div id="hidden_div" style="display: none">
+<%= form_tag('', :remote => true, method: :put, :id => 'form_remote') do %>
+   	<input type="hidden" id="pre_submit_url" value="<%=software_package_path(@software, @package)%>"/>
+   	<input id="f_destine" name="f[destine]" type="text" />
+<% end %>
+</div>

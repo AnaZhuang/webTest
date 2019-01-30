@@ -1,0 +1,69 @@
+<script type="text/javascript">
+	var url = "<%= update_state_software_deploy_batch_deploy_logs_path(@software, @deploy_batch) %>";
+    var error_hash = new Array();
+    error_hash[0] = "";
+    <% DeployError.all.each do |x| %>
+    error_hash[<%=x.id%>] = "<%= x.name %>";
+    <% end  %>
+     
+    var state_hash = new Array();
+    state_hash[0] = "";
+    <% MachineDeployState.all.each do |x| %>
+    state_hash[<%=x.id%>] = "<%= x.name %>";
+    <% end %>
+
+    var key_hash = new Array();
+    var value_hash = new Array(); 
+    var i = 0;
+    <% @deploy_logs.each do |x| %>
+    key_hash[<%=x.id%>] = i;
+    value_hash[i] = "<%= x.id.to_s + ',' + x.machine_deploy_state_id.to_s + ',' + ( x.deploy_error_id.nil? ? '0' : x.deploy_error_id.to_s) %>";
+    i += 1; 
+    <% end %>
+    
+	function update_state()
+	{
+        $.post(url, { value: value_hash.join(";") }, function(data){
+          	for (var i = 0; i < data.length; i++)
+          	{
+          		value_hash[key_hash[data[i].id]] = data[i].id + "," + data[i].state + "," + data[i].error;
+          		if ($("#state_" + data[i].id).html() != state_hash[data[i].state])
+          		{
+          		    $("#state_" + data[i].id).html(state_hash[data[i].state]);
+          		    $("#state_" + data[i].id).effect("highlight", {}, 3000);
+          		}
+          		if ($("#error_" + data[i].id).html() != error_hash[data[i].error])
+          		{
+          		    $("#error_" + data[i].id).html(error_hash[data[i].error]);
+          		    $("#error_" + data[i].id).effect("highlight", {}, 3000);
+          		    $("#cause_" + data[i].id).html(data[i].cause);
+          		    $("#cause_" + data[i].id).effect("highlight", {}, 3000);
+          		}
+          	}
+        });
+	}
+</script>
+<h1>Software: <%= @software.name %></h1>
+<table>
+  <tr>
+  	<th>Version</th>
+  	<th>At</th>
+  	<th>Ip</th>
+    <th>State</th>
+    <th>Result</th>
+    <th>Cause</th>
+  </tr>
+
+<% @deploy_logs.each do |deploy_log| %>
+  <tr>
+  	<td><%= deploy_log.machine_package.package.version %></td>
+  	<td><%= deploy_log.created_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+    <td><%= deploy_log.machine_package.machine.ip %></td>
+    <td><span id="state_<%=deploy_log.id%>"><%= deploy_log.machine_deploy_state.name %></span></td>
+    <td><span id="error_<%=deploy_log.id%>"><%= deploy_log.deploy_error ? deploy_log.deploy_error.name : '' %></span></td>
+    <td><span id="cause_<%=deploy_log.id%>" style="color: red;" ><%= deploy_log.cause %></span></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Back', software_deploy_batches_path(@software)%>

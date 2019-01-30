@@ -1,0 +1,16 @@
+<h1>Editing ruleset</h1>
+<%= form_tag :action => :change %>
+  <input name="_method" type="hidden" value="put" />
+<% @protocols.each do | protocol | %>
+  &nbsp;&nbsp;&nbsp;&nbsp;<%= label_tag "ruleset[protocol][#{protocol.id}]", protocol.name %>
+  <% if @ruleset.protocols.include?(protocol) %>
+    <%= check_box_tag "ruleset[protocol][#{protocol.id}]", protocol.id, true %>
+  <% else %>
+    <%= check_box_tag "ruleset[protocol][#{protocol.id}]", protocol.id, false %>
+  <% end %>
+<% end %>
+<br/>
+<%= submit_tag 'save'%>
+</form>
+<br/>
+<%= link_to 'Back', rulesets_path %>

@@ -1,0 +1,53 @@
+2017_05_26 09:21:03 INFO    云主机tqovj停止成功
+2017_05_26 09:21:03 INFO    End case: stop vm tqovj
+
+2017_05_26 09:21:03 INFO    Begin case: start vm tqovj
+2017_05_26 09:21:33 INFO    VM tqovj is starting!
+2017_05_26 09:22:01 INFO    云主机tqovj启动成功
+2017_05_26 09:22:01 INFO    End case: start vm tqovj
+
+2017_05_26 09:22:01 INFO    Begin case: restart vm tqovj
+2017_05_26 09:22:05 INFO    VM tqovj is restarting
+2017_05_26 09:22:35 WARNING 云主机tqovj重启超时
+2017_05_26 09:22:35 INFO    End case: restart vm tqovj
+
+2017_05_26 09:22:35 INFO    Begin case: security management vm tqovj
+2017_05_26 09:22:36 INFO    End case: security management vm tqovj
+
+2017_05_26 09:22:39 INFO    Begin case: create disk data0526092239
+2017_05_26 09:22:47 INFO    云磁盘data0526092239创建成功
+2017_05_26 09:22:47 INFO    End case: create disk data0526092239
+
+2017_05_26 09:22:47 INFO    Begin case:mount disk data0526092239
+2017_05_26 09:22:56 INFO    挂载成功
+2017_05_26 09:22:56 INFO    End case:mount disk data0526092239
+
+2017_05_26 09:22:56 INFO    Begin case:unmount disk data0526092239
+2017_05_26 09:22:56 WARNING VM status is 运行,can not create snapshot,so stop vm first!
+2017_05_26 09:22:59 INFO    enter vm management
+2017_05_26 09:22:59 INFO    Begin case: stop vm tqovj
+2017_05_26 09:23:03 INFO    VM tqovj is stoping
+2017_05_26 09:23:21 INFO    云主机tqovj停止成功
+2017_05_26 09:23:21 INFO    End case: stop vm tqovj
+
+2017_05_26 09:23:30 INFO    卸载云磁盘成功
+2017_05_26 09:23:30 INFO    End case:unmount disk data0526092239
+
+2017_05_26 09:23:30 INFO    Begin case:disk data0526092239 create snapshot 
+2017_05_26 09:23:54 INFO    云磁盘data0526092239创建快照成功
+2017_05_26 09:23:55 INFO    snapshot name : detached_data0526092239_20170526012333
+2017_05_26 09:23:55 INFO    End case:disk data0526092239 create snapshot 
+
+2017_05_26 09:23:55 INFO    Begin case:delete snapshot  detached_data0526092239_20170526012333 
+2017_05_26 09:24:01 INFO    成功删除快照
+2017_05_26 09:24:01 INFO    End case: delete snapshot detached_data0526092239_20170526012333
+
+2017_05_26 09:24:01 INFO    Begin case:delete disk data0526092239 
+2017_05_26 09:24:06 INFO    云磁盘data0526092239删除成功
+2017_05_26 09:24:06 INFO    End case: delete disk data0526092239
+
+2017_05_26 09:24:09 INFO    enter vm management
+2017_05_26 09:24:09 INFO    Begin case: delete vm tqovj
+2017_05_26 09:24:32 INFO    云主机tqovj删除成功
+2017_05_26 09:24:32 INFO    End case: delete vm tqovj
+

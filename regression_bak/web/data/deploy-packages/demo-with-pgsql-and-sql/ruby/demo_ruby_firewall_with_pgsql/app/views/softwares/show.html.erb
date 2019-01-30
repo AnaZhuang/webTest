@@ -1,0 +1,53 @@
+<p>
+  <b>Name:</b>
+  <%= @software.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @software.description %>
+</p>
+
+<p>
+  <b>Scope:</b>
+  <%= @software.scope %>
+</p>
+
+<p>
+  <b>Check Type:</b>
+  <%= @software.check_type.name %>
+</p>
+
+<p>
+  <b>Install Timeout:</b>
+  <%= @software.timeout %> seconds
+</p>
+
+<p>
+  <b>Check Value:</b>
+  <%= @software.check_value %>
+</p>
+
+<p>
+  <b>Groups:</b>
+  <%= @software.groups %>
+</p>
+
+<p>
+  <b>Users:</b>
+  <%= @software.users %>
+</p>
+
+<p>
+  <b>Start command:</b>
+  <%= @software.start_command %>
+</p>
+
+<p>
+  <b>Stop command:</b>
+  <%= @software.stop_command %>
+</p>
+
+
+<%= link_to 'Edit', edit_software_path(@software) %> |
+<%= link_to 'Back', softwares_path %>

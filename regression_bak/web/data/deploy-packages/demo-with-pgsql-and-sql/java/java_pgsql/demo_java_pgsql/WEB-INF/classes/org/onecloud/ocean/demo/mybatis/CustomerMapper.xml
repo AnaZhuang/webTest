@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.onecloud.ocean.demo.mybatis.CustomerMapper">
+
+	<insert id="addCustomer" parameterType="customer">
+		INSERT INTO customer
+		(name, sex, birthday)
+		VALUES
+		(#{name}, #{sex}, #{birthday})
+	</insert>
+
+	<update id="updateCustomer" parameterType="customer">
+		UPDATE customer
+		SET
+		name = #{name}, sex = #{sex}, birthday = #{birthday}
+		WHERE customer_id
+		= #{customerId}
+	</update>
+
+	<delete id="deleteCustomer" parameterType="int">
+		DELETE FROM customer
+		WHERE customer_id = #{value}
+	</delete>
+
+	<select id="getCustomer" parameterType="int" resultType="customer">
+		SELECT
+		customer_id as
+		customerId, name, sex, birthday
+		FROM customer
+		WHERE
+		customer_id = #{value}
+	</select>
+
+	<select id="getAllCustomers" resultType="customer">
+		SELECT customer_id as
+		customerId, name, sex, birthday
+		FROM customer
+		ORDER BY customer_id DESC
+	</select>
+</mapper>

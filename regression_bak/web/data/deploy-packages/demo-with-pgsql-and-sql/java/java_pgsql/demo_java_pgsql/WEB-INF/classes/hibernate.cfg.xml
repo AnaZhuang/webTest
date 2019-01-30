@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">com.onecloud.facet.ocean.jdbc.OceanDriver</property>
+		<property name="connection.url">jdbc:ocean:postgresql://3363_1053_9285_5151/sampledb?readOnly=false</property>
+		<property name="connection.username">u1111111111112222</property>
+		<property name="connection.password"></property>
+
+		<!-- Names the annotated entity class -->
+		<mapping class="org.onecloud.ocean.demo.hibernate.Customer" />
+	</session-factory>
+</hibernate-configuration>

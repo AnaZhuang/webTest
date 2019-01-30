@@ -1,0 +1,62 @@
+<%= form_for(@software) do |f| %>
+  <% if @software.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@software.errors.count, "error") %> prohibited this software from being saved:</h2>
+
+      <ul>
+      <% @software.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <% if action_name == 'edit' %>
+    <%= f.text_field :name, :readonly => true %>
+    <% else %>
+    <%= f.text_field :name %>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </div>
+  <div class="field">
+    <%= f.label :scope %><br />
+    <%= f.text_field :scope %><span style="color: blue">exp: 192.168.0.7,192.168.2.4..56</span>
+  </div>
+  <div class="field">
+    <%= f.label :check_type_id %><br />
+    <%= f.select :check_type_id, CheckType.all.collect{ |x| [x.name, x.id] } %>
+  </div>
+  <div class="field">
+    <%= f.label :check_value %><br />
+    <%= f.text_field :check_value %><span style="color: blue">file: filename, process: process name, tcp\http: port</span>
+  </div>
+  <div class="field">
+    <%= f.label :timeout %><br />
+    <%= f.text_field :timeout %><span style="color: blue">seconds</span>
+  </div>
+  <div class="field">
+    <%= f.label :groups %><br />
+    <%= f.text_field :groups %><span style="color: blue">exp: apache,ossec</span>
+  </div>
+  <div class="field">
+    <%= f.label :users %><br />
+    <%= f.text_field :users, :size => 120 %><br/>
+    <span style="color: blue">exp: usr1,/home/usr1,/sbin/nonlogin,users;usr2,/home/usr2,/sbin/nonlogin,ossec</span>
+  </div>
+  <div class="field">
+    <%= f.label :start_command %><br />
+    <%= f.text_field :start_command %>
+  </div>
+  <div class="field">
+    <%= f.label :stop_command %><br />
+    <%= f.text_field :stop_command %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

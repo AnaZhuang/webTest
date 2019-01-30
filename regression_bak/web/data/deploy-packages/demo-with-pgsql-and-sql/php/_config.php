@@ -1,0 +1,6 @@
+<?php
+define('DB_HOST', OCE_MYSQL_HOST.':'.OCE_MYSQL_PORT);
+define('DB_USER', OCE_MYSQL_USER);
+define('DB_PWD', OCE_MYSQL_PWD);
+define('DB_NAME_DEFAULT', OCE_MYSQL_DB);
+

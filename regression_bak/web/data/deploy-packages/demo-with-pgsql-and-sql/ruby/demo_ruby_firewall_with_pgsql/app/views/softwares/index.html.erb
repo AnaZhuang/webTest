@@ -1,0 +1,71 @@
+<h1>Listing softwares</h1>
+<script type="text/javascript">
+	function import_action()
+	{
+		if ($("#upload").css("display") == "none")
+		{
+			$("#upload").css("display", "");
+		}
+		else
+		{
+			$("#upload").css("display", "none");
+		}
+	}
+</script>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Scope</th>
+    <th>Totol</th>
+    <th>Deployed</th>
+    <th>Undeployed</th>
+    <th>last version</th>
+    <th>Operations</th>
+  </tr>
+
+<% @softwares.each do |software| %>
+  <tr>
+    <td><%= software.name %></td>
+    <td><%= software.description %></td>
+    <td><%= software.scope %></td>
+    <td><%= software.ips.size %></td>
+    <td><%= software.deployed_num %></td>
+    <td><%= software.undeployed_num %></td>
+    <td><%= software.last_version %></td>
+    <td><%= link_to 'Show', software %>
+        <%= link_to 'Edit', edit_software_path(software) %>
+        <%= link_to 'Packages', software_packages_path(software) %>
+        <% if software.packages.size == 0 %>
+        <%= link_to 'Destroy', software, confirm: 'Are you sure?', method: :delete %>
+        <% end %>
+        <% if software.undeployed_num > 0 %>
+          <%= link_to 'Deploy', deploy_software_path(software), method: :post %>
+        <% end %>
+        <% if software.deployed_num > 0 %>
+          <%= link_to 'Undeploy', undeploy_software_path(software), method: :post %>
+		<% end %>
+        <% if software.deploy_batches.size > 0 %>
+          <%= link_to 'LogBatches', software_deploy_batches_path(software) %>
+        <% end %>
+        <% if software.publish_packages.size > 0 %>
+          <%= link_to 'Config', conf_software_path(software) %>
+		<% end %>
+        <%= link_to 'Export', export_software_path(software), method: :post %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New', new_software_path %> <%= link_to_function "Import", "import_action();" %>
+
+<div id="upload" style="display: none;">
+<%= form_tag(import_softwares_path, :multipart => true) do %>
+<label for="upload_file">Select File</label> : 
+<input id="upload" name="upload" type="file" value=""/>
+<input name="commit" type="submit" value="Upload" onclick="return submit_file();"/>
+<% end %>
+</div>
+

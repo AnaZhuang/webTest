@@ -1,0 +1,49 @@
+#!/bin/sh
+#################################################
+# 5.main setting, dynamic generate
+#################################################
+
+# open ssh to all for deploy rc.firewall
+
+#allow management server can visit any matchines by ssh
+iptables -A INPUT -p tcp -s <%= @admin_ip %> --dport 22 -m state --state NEW -j ACCEPT
+
+# Create the filter INPUT chains
+iptables -A INPUT -s <%= @zone.value %> -d <%= @zone.value %> -j ACCEPT
+
+<% @to_rulesets.each do |ruleset| %>
+# Create chain to filter traffic going from '<%= ruleset.from.name %>' to '<%= ruleset.to.name %>'
+  <% chain_name = "f#{ruleset.from.id}to#{ruleset.to.id}" %>
+iptables -N <%= chain_name %>
+  <% if ruleset.protocols.any? %>
+    <% ruleset.protocols.each do |protocol| %>
+      <% protocol.ports.split(',').each do |port| %>
+iptables -A <%= chain_name %> -p tcp <%= ruleset.from_ips_str %> --sport <%= ruleset.from.local_ports %> <%= ruleset.to_ips_str %> --dport <%= port %> -m state --state NEW -j ACCEPT
+      <% end %>
+    <% end %>
+  <% end %>
+iptables -A <%= chain_name %> -j DROP
+iptables -A INPUT <%= ruleset.from_ips_str %> <%= ruleset.to_ips_str %> -j <%= chain_name %>
+<% end %>
+
+# Create the filter OUTPUT chains
+iptables -A OUTPUT -s <%= @zone.value %> -d <%= @zone.value %> -j ACCEPT
+
+<% @from_rulesets.each do |ruleset| %>
+# Create chain to filter traffic going from '<%= ruleset.from.name %>' to '<%= ruleset.to.name %>'
+  <% chain_name = "f#{ruleset.from.id}to#{ruleset.to.id}" %>
+iptables -N <%= chain_name %>
+  <% if ruleset.protocols.any? %>
+    <% ruleset.protocols.each do |protocol| %>
+      <% protocol.ports.split(',').each do |port| %>
+iptables -A <%= chain_name %> -p tcp <%= ruleset.from_ips_str %> --sport <%= ruleset.from.local_ports %> <%= ruleset.to_ips_str %> --dport <%= port %> -m state --state NEW -j ACCEPT
+      <% end %>
+    <% end %>
+  <% end %>
+iptables -A <%= chain_name %> -j DROP
+iptables -A OUTPUT <%= ruleset.from_ips_str %> <%= ruleset.to_ips_str %> -j <%= chain_name %>
+<% end %>
+
+echo "Finished."
+
+true

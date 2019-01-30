@@ -1,0 +1,16 @@
+<h1>Listing machines</h1>
+
+<table>
+  <tr>
+  	<th>ip</th>
+  	<th>softwares</th>
+  </tr>
+
+<% @machines.each do |machine| %>
+  <tr>
+  	<td><%= machine.ip %></td>
+    <td><%= machine.softwares_str %></td>
+  </tr>
+<% end %>
+</table>
+

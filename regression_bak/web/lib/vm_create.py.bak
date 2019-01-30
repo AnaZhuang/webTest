@@ -1,0 +1,59 @@
+#!/usr/local/bin/python
+#coding=utf-8
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
+import unittest, time, re,httplib
+import sys,string,random
+
+if "/home/clouder/regression/web/lib" not in sys.path:
+	sys.path.append("/home/clouder/regression/web/lib")
+import read_conf
+import map_conf
+from xlrd import open_workbook,cellname
+import query_resource
+import verify
+import log
+import app_operation
+import cube_login
+import driver_common
+
+def cube_createvm(driver):
+    vm_name = read_conf.vm_name
+    log.logger.info("Begin case: create vm name: %s" % vm_name)
+    WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, ".//*[@id='mCSB_1_container']/li[1]"))).click()
+    time.sleep(2)
+    driver.find_element_by_css_selector('.cjyzjHT').click()
+    time.sleep(1)
+    driver.find_element_by_css_selector('#vmName').clear()
+    time.sleep(1)
+    driver.find_element_by_css_selector('#vmName').send_keys(vm_name)
+
+    # 选择服务套餐
+    driver.find_element_by_xpath("//select[@id='offeringId']").send_keys("Small instance")
+    time.sleep(1)
+    driver.find_element_by_xpath(".//*[@id='templateId']").send_keys("iaas-CentOS6.4")
+    time.sleep(1)
+    driver.find_element_by_xpath(".//*[@id='networkId']").send_keys("poweronenet")
+    time.sleep(1)
+    driver.find_element_by_css_selector("#buyVm_confirm").click()
+    time.sleep(5)
+    driver.find_element_by_xpath("html/body/div[6]/div[3]/div/button").click()
+    action = u"云主机%s创建" % vm_name
+    if u"成功" not in driver_common.async_info_status(driver, 180, action):
+        log.logger.warn("End case: create vm name: %s Failed!" % vm_name)
+        return False
+
+    time.sleep(10)
+    driver.find_element_by_css_selector(".yzjglHT").click()
+    status = driver.find_element_by_link_text(vm_name).get_attribute("state")
+    if status == "RUNNING":
+        log.logger.info("End case: create vm name: %s success" % vm_name)
+    else:
+        log.logger.warn("End case: create vm name: %s Failed!" % vm_name)
+
+    return vm_name

@@ -1,0 +1,26 @@
+<h1>Listing Rulesets</h1>
+
+<table>
+  <tr>
+    <th>from</th>
+    <th>to</th>
+    <th>permited</th>
+    <th>operation</th>
+  </tr>
+
+<% 
+  froms = []
+  rowspan = Zone.count - 1 
+%>
+<% @rulesets.each do |ruleset| %>
+  <tr>
+  	<% unless froms.include?(ruleset.from.name) %>
+    <td rowspan="<%= rowspan %>"><%= ruleset.from.name %></td>
+    <% froms.push ruleset.from.name %>
+    <% end %>
+    <td><%= ruleset.to.name %></td>
+    <td><%= ruleset.protocols.collect{|x| x.name }.join(',') %></td>
+    <td><%= link_to 'Edit', edit_ruleset_path(ruleset) %></td>
+  </tr>
+<% end %>
+</table>

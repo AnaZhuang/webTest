@@ -1,0 +1,29 @@
+<h1>Listing deploy_batches</h1>
+
+<table>
+  <tr>
+    <th>Software</th>
+    <th>Time</th>
+    <th>Log Number</th>
+    <th>Do</th>
+    <th>State</th>
+    <th>Operations</th>
+  </tr>
+
+<% @deploy_batches.each do |deploy_batch| %>
+  <tr>
+    <td><%= deploy_batch.software.name %></td>
+    <td><%= deploy_batch.created_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+    <td><%= deploy_batch.deploy_logs.size %></td>
+    <td><%= deploy_batch.deploy_name %></td>
+    <td><%= deploy_batch.state_name %></td>
+    <td>
+    	<%= link_to 'Logs', software_deploy_batch_deploy_logs_path(@software, deploy_batch) %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Back', softwares_path %>

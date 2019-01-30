@@ -1,0 +1,34 @@
+#! /bin/sh
+#
+# Author: ly
+#
+# /etc/init.d/monitor_firewall
+#
+### BEGIN INIT INFO
+# Provides:       clear_service
+# Required-Start: $network
+# Required-Stop:  $network
+# Should-Start: 
+# Should-Stop: 
+# Default-Start:  3 5
+# Default-Stop:   0 1 2 6
+# Short-Description: monitor iptables
+# Description:   monitor iptables
+### END INIT INFO
+
+case "$1" in
+  start)
+    /home/clouder/vs/program/monitor_firewall/clear_service.rb > /home/clouder/vs/program/monitor_firewall/clear_service.log 1>/dev/null 2>&1 &
+  ;;
+  stop)
+    killall clear_service.rb
+  ;;
+  restart)
+    $0 stop
+    $0 start
+  ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+  ;;
+esac

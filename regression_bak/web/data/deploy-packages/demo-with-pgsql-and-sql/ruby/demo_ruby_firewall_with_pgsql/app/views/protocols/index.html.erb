@@ -1,0 +1,28 @@
+<h1>Listing protocols</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Ports</th>
+    <th>Type</th>
+    <th>Operations</th>
+  </tr>
+
+<% @protocols.each do |protocol| %>
+  <tr>
+    <td><%= protocol.name %></td>
+    <td><%= protocol.ports %></td>
+    <td><%= protocol.type %></td>
+    <td>
+    	<%= link_to 'Edit', edit_protocol_path(protocol) %>
+        <% unless protocol.sys? %>	
+          <%= link_to 'Destroy', protocol, confirm: 'Are you sure?', method: :delete %>
+        <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Protocol', new_protocol_path %>
